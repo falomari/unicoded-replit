@@ -1,0 +1,1 @@
+- [Stripe Test Mode currencies](stripe-test-currency.md) — Checkout currency support depends on the connected account, not only Stripe’s global list.

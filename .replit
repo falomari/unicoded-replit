@@ -18,3 +18,8 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[userenv]
+
+[userenv.shared]
+VITE_STRIPE_PUBLISHABLE_KEY = "pk_test_51UDR1V22APJIwUqcqks4zItluGBmP3RS8hwsss9eE8BqFQqf4rAtneRz6yoBqS3BTrwtVWuYO56XAV5SycOCn1G000slEZZCpP"

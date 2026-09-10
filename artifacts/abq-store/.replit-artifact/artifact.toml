@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "عبق — متجر العطور العربية"
+description = "متجر عربي خفيف ومتجاوب لعرض وشراء العطور العربية مع سلة مشتريات وStripe Checkout في وضع الاختبار."
+version = "1.0.0"
+id = "artifacts/abq-store"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25298
+
+[services.development]
+run = "pnpm --filter @workspace/abq-store run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/abq-store", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/abq-store/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25298"
+BASE_PATH = "/"
