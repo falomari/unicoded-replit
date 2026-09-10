@@ -49,7 +49,9 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     return;
   }
 
-  const secretKey = process.env.STRIPE_SECRET_KEY;
+  const globalObj = globalThis as any;
+  const env = globalObj.process?.env ?? {};
+  const secretKey = env.STRIPE_SECRET_KEY;
   if (!secretKey) {
     res.status(500).json({ error: "لم يتم إعداد مفتاح Stripe السري." });
     return;
@@ -62,7 +64,8 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     return;
   }
   const origin = `${forwardedProto}://${host}`;
-  const params = new URLSearchParams({
+  const URLSearchParamsClass = globalObj.URLSearchParams;
+  const params = new URLSearchParamsClass({
     mode: "payment",
     success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/cancel`,
@@ -71,7 +74,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     "shipping_address_collection[allowed_countries][2]": "AE",
   });
 
-  resolvedItems.forEach(({ product, quantity }, index) => {
+  resolvedItems.forEach(({ product, quantity }, index: number) => {
     params.set(`line_items[${index}][quantity]`, String(quantity));
     params.set(`line_items[${index}][price_data][currency]`, product!.currency);
     params.set(`line_items[${index}][price_data][unit_amount]`, String(product!.price));
@@ -86,7 +89,8 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
   });
 
   try {
-    const stripeResponse = await fetch(
+    const fetchFn = globalObj.fetch;
+    const stripeResponse = await fetchFn(
       "https://api.stripe.com/v1/checkout/sessions",
       {
         method: "POST",
