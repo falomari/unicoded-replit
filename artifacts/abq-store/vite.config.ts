@@ -44,6 +44,15 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
+    sourcemap: false,
+    rollupOptions: {
+      onLog(level, log, handler) {
+        if (log.code === 'MODULE_LEVEL_DIRECTIVE') {
+          return;
+        }
+        handler(level, log);
+      },
+    },
   },
   server: {
     port,
