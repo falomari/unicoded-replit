@@ -7,6 +7,11 @@ import NotFound from '@/pages/not-found';
 import { getListProductsQueryKey, useCreateCheckoutSession, useListProducts } from '@workspace/api-client-react';
 import type { Product } from '@workspace/api-client-react';
 import { ArrowLeft, Check, CircleAlert, Droplets, Gem, Minus, Plus, ShoppingBag, Sparkles, Trash2, X } from 'lucide-react';
+import perfume01 from './assets/perfume-01.png';
+import perfume02 from './assets/perfume-02.png';
+import perfume03 from './assets/perfume-03.png';
+import perfume04 from './assets/perfume-04.png';
+import perfume05 from './assets/perfume-05.png';
 import {
   Route,
   Switch,
@@ -19,6 +24,17 @@ const queryClient = new QueryClient();
 
 type CartLine = Product & { quantity: number };
 
+const productImages: Record<string, string> = {
+  'oud-noir': perfume01,
+  'amber-veil': perfume02,
+  'rose-majlis': perfume03,
+  'musk-sahar': perfume04,
+  'incense-ritual': perfume05,
+  'sandal-dune': perfume01,
+};
+
+const heroImage = perfume05;
+
 const money = (amount: number, currency: string) => {
   const normalizedCurrency = currency.toUpperCase();
   const divisor = normalizedCurrency === 'KWD' ? 1000 : 100;
@@ -30,10 +46,9 @@ const money = (amount: number, currency: string) => {
 };
 
 function ProductArtwork({ product, className = '' }: { product: Product; className?: string }) {
-  const colorClass = product.id.charCodeAt(0) % 3 === 0 ? 'product-art--deep' : product.id.charCodeAt(0) % 2 === 0 ? 'product-art--light' : '';
   return (
-    <div className={`product-art ${colorClass} ${className}`} aria-label={product.name}>
-      <span className="product-bottle" aria-hidden="true" />
+    <div className={`product-art ${className}`} aria-label={product.name}>
+      <img src={productImages[product.id] ?? perfume01} alt={product.name} />
     </div>
   );
 }
@@ -120,7 +135,7 @@ function CartPanel({ items, open, onClose, onUpdate, onRemove, onCheckout, isChe
               {items.map((item) => (
                 <div className="cart-item" key={item.id} data-testid={`row-cart-item-${item.id}`}>
                   <div className="cart-thumb">
-                    <span className="cart-thumb-fallback" aria-hidden="true" />
+                    <img src={productImages[item.id] ?? perfume01} alt="" />
                   </div>
                   <div>
                     <p className="cart-item-name">{item.name}</p>
@@ -197,9 +212,9 @@ function Home() {
               <span className="hero-note"><Sparkles size={13} /> كل زجاجة تُحضّر بعناية لتصل كما تخيلناها.</span>
             </div>
             <div className="hero-still fade-up delay-2">
-              <span className="hero-index">01 / 03</span>
+        <span className="hero-index">01 / 05</span>
               <div className="still-frame">
-                <div className="still-bottle"><div className="bottle-glass" /></div>
+                <img className="hero-product-image" src={heroImage} alt="زجاجة عطر عبق" />
                 <div className="still-caption">ماء عطر <span>EAU DE PARFUM · 50 ML</span></div>
               </div>
             </div>
