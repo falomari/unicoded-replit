@@ -1,5 +1,11 @@
 {
   "buildCommand": "pnpm --filter @workspace/abq-store run build",
   "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "artifacts/abq-store/dist/public"
+  "outputDirectory": "artifacts/abq-store/dist/public",
+  "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
 }
