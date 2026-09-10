@@ -33,7 +33,7 @@ function ProductArtwork({ product, className = '' }: { product: Product; classNa
   const colorClass = product.id.charCodeAt(0) % 3 === 0 ? 'product-art--deep' : product.id.charCodeAt(0) % 2 === 0 ? 'product-art--light' : '';
   return (
     <div className={`product-art ${colorClass} ${className}`} aria-label={product.name}>
-      {product.image ? <img src={product.image} alt={product.name} onError={(event) => { event.currentTarget.style.display = 'none'; }} /> : null}
+      <span className="product-bottle" aria-hidden="true" />
     </div>
   );
 }
@@ -120,7 +120,7 @@ function CartPanel({ items, open, onClose, onUpdate, onRemove, onCheckout, isChe
               {items.map((item) => (
                 <div className="cart-item" key={item.id} data-testid={`row-cart-item-${item.id}`}>
                   <div className="cart-thumb">
-                    {item.image ? <img src={item.image} alt="" onError={(event) => { event.currentTarget.style.display = 'none'; }} /> : <span className="cart-thumb-fallback" />}
+                    <span className="cart-thumb-fallback" aria-hidden="true" />
                   </div>
                   <div>
                     <p className="cart-item-name">{item.name}</p>

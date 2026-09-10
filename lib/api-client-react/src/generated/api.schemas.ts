@@ -16,7 +16,6 @@ export interface Product {
   /** Price in the smallest currency unit */
   price: number;
   currency: string;
-  image: string;
   notes: string;
 }
 

@@ -132,7 +132,7 @@ button { font: inherit; }
 }
 .bottle-glass { background: linear-gradient(104deg, hsl(12 35% 31%), hsl(11 45% 48%) 43%, hsl(20 32% 28%)); border: 5px solid hsl(39 53% 60% / .75); border-radius: 8px 8px 19px 19px; box-shadow: 17px 23px 30px rgba(42, 28, 20, .26), inset 10px 0 18px hsl(0 0% 100% / .13); height: 248px; position: relative; width: 148px; }
 .bottle-glass::before { background: hsl(var(--gold)); border-radius: 3px; content: ''; height: 47px; left: 34px; position: absolute; top: -48px; width: 73px; }
-.bottle-glass::after { border: 1px solid hsl(var(--gold) / .65); border-radius: 3px; content: 'عَبَق'; color: hsl(39 55% 76%); font-size: 1.4rem; left: 21px; padding: 17px 8px; position: absolute; right: 21px; text-align: center; top: 90px; }
+.bottle-glass::after { content: 'عَبَق'; color: hsl(39 55% 76%); font-size: 1.4rem; left: 0; position: absolute; right: 0; text-align: center; top: 98px; }
 .still-caption { bottom: 37px; color: hsl(var(--surface)); font-size: .72rem; left: 37px; position: absolute; z-index: 3; }
 .still-caption span { color: hsl(var(--gold)); display: block; font-family: var(--app-font-mono); font-size: .6rem; margin-top: 4px; }
 .hero-index { color: hsl(var(--accent)); font-family: var(--app-font-mono); font-size: .72rem; position: absolute; right: 0; top: -28px; }
@@ -147,18 +147,31 @@ button { font: inherit; }
 .product-image {
   aspect-ratio: .86; background: hsl(var(--surface-deep)); overflow: hidden; position: relative;
 }
-.product-image img { height: 100%; object-fit: cover; transition: transform .55s cubic-bezier(.2,.7,.2,1); width: 100%; }
-.product-card:hover .product-image img { transform: scale(1.045); }
 .product-art {
   align-items: center; background: linear-gradient(145deg, hsl(31 31% 86%), hsl(15 30% 70%)); display: flex; height: 100%; justify-content: center; position: relative;
 }
-.product-art::before { border: 1px solid hsl(var(--gold) / .7); content: ''; inset: 13px; position: absolute; }
-.product-art::after { background: linear-gradient(90deg, hsl(10 35% 29%), hsl(11 48% 48%) 50%, hsl(23 28% 27%)); border: 3px solid hsl(var(--gold) / .65); border-radius: 5px 5px 12px 12px; box-shadow: 8px 12px 19px rgba(49, 28, 20, .2); content: ''; height: 48%; position: absolute; width: 28%; }
 .product-art--light { background: linear-gradient(145deg, hsl(40 33% 90%), hsl(35 30% 76%)); }
-.product-art--light::after { background: linear-gradient(90deg, hsl(31 30% 75%), hsl(40 45% 91%), hsl(31 30% 69%)); }
 .product-art--deep { background: linear-gradient(145deg, hsl(14 31% 53%), hsl(13 35% 30%)); }
-.product-art--deep::before { border-color: hsl(var(--gold) / .55); }
-.product-art--deep::after { background: linear-gradient(90deg, hsl(9 28% 15%), hsl(11 42% 31%), hsl(9 26% 13%)); }
+.product-bottle {
+  background: linear-gradient(90deg, hsl(10 35% 29%), hsl(11 48% 48%) 50%, hsl(23 28% 27%));
+  border: 3px solid hsl(var(--gold) / .65);
+  border-radius: 5px 5px 12px 12px;
+  box-shadow: 8px 12px 19px rgba(49, 28, 20, .2);
+  height: 48%;
+  position: relative;
+  width: 28%;
+}
+.product-bottle::before {
+  background: hsl(var(--gold));
+  content: '';
+  height: 17%;
+  left: 30%;
+  position: absolute;
+  top: -17%;
+  width: 40%;
+}
+.product-art--light .product-bottle { background: linear-gradient(90deg, hsl(31 30% 75%), hsl(40 45% 91%), hsl(31 30% 69%)); }
+.product-art--deep .product-bottle { background: linear-gradient(90deg, hsl(9 28% 15%), hsl(11 42% 31%), hsl(9 26% 13%)); }
 .product-tag { background: hsl(var(--surface) / .9); color: hsl(var(--accent)); font-size: .64rem; font-weight: 700; left: 14px; padding: 6px 9px; position: absolute; top: 14px; z-index: 2; }
 .product-meta { padding: 15px 1px 0; }
 .product-meta-top { align-items: baseline; display: flex; justify-content: space-between; gap: 12px; }

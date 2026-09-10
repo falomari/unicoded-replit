@@ -1,5 +1,4 @@
 import { Router, type IRouter, type Request } from "express";
-import { ReplitConnectors } from "@replit/connectors-sdk";
 import {
   CreateCheckoutSessionBody,
   CreateCheckoutSessionResponse,
@@ -7,7 +6,6 @@ import {
 } from "@workspace/api-zod";
 
 const router: IRouter = Router();
-const connectors = new ReplitConnectors();
 
 const products = [
   {
@@ -16,8 +14,6 @@ const products = [
     description: "عود دافئ بلمسة جلدية عميقة، مصاغ لأمسيات لا تُنسى.",
     price: 18500,
     currency: "aed",
-    image:
-      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=85",
     notes: "عود • زعفران • جلد",
   },
   {
@@ -26,8 +22,6 @@ const products = [
     description: "عنبر ذهبي ناعم يلتقي بالفانيلا وخشب الصندل.",
     price: 16000,
     currency: "aed",
-    image:
-      "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=900&q=85",
     notes: "عنبر • فانيلا • صندل",
   },
   {
@@ -36,8 +30,6 @@ const products = [
     description: "ورد طائفي مخملي مع لمسة بخور ناعمة وحضور أنيق.",
     price: 14500,
     currency: "aed",
-    image:
-      "https://images.unsplash.com/photo-1563170351-be82bc888aa4?auto=format&fit=crop&w=900&q=85",
     notes: "ورد • بخور • مسك",
   },
   {
@@ -46,8 +38,6 @@ const products = [
     description: "مسك أبيض نظيف، هادئ ومشرق للاستخدام اليومي.",
     price: 12500,
     currency: "aed",
-    image:
-      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=85",
     notes: "مسك أبيض • زهر البرتقال",
   },
   {
@@ -56,8 +46,6 @@ const products = [
     description: "مزيج بخوري غني يترك أثرًا دافئًا ومتزنًا في المكان.",
     price: 17500,
     currency: "aed",
-    image:
-      "https://images.unsplash.com/photo-1615634260167-c8cdede054de?auto=format&fit=crop&w=900&q=85",
     notes: "بخور • أخشاب • توابل",
   },
   {
@@ -66,8 +54,6 @@ const products = [
     description: "صندل كريمي بنفحات زعفران وعنبر، بطابع عربي معاصر.",
     price: 15500,
     currency: "aed",
-    image:
-      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=85",
     notes: "صندل • زعفران • عنبر",
   },
 ] as const;
@@ -95,6 +81,12 @@ router.post("/checkout-session", async (req, res) => {
   }
 
   const origin = getRequestOrigin(req);
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    res.status(500).json({ error: "لم يتم إعداد مفتاح Stripe السري." });
+    return;
+  }
+
   const lineItems = requestedItems.map(({ product, quantity }) => ({
     price_data: {
       currency: product!.currency,
@@ -102,16 +94,16 @@ router.post("/checkout-session", async (req, res) => {
       product_data: {
         name: product!.name,
         description: product!.description,
-        images: [product!.image],
       },
     },
     quantity,
   }));
 
   try {
-    const response = await connectors.proxy("stripe", "/v1/checkout/sessions", {
+    const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${secretKey}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: toFormEncoded({
@@ -166,7 +158,7 @@ function toFormEncoded(values: Record<string, unknown>) {
           price_data: {
             currency: string;
             unit_amount: number;
-            product_data: { name: string; description: string; images: string[] };
+            product_data: { name: string; description: string };
           };
           quantity: number;
         };
@@ -178,12 +170,6 @@ function toFormEncoded(values: Record<string, unknown>) {
           `line_items[${index}][price_data][product_data][description]`,
           item.price_data.product_data.description,
         );
-        item.price_data.product_data.images.forEach((image, imageIndex) => {
-          params.set(
-            `line_items[${index}][price_data][product_data][images][${imageIndex}]`,
-            image,
-          );
-        });
       });
       continue;
     }

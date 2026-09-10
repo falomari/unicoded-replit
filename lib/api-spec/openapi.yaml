@@ -87,7 +87,6 @@ components:
         - description
         - price
         - currency
-        - image
         - notes
       properties:
         id:
@@ -101,9 +100,6 @@ components:
           description: Price in the smallest currency unit
         currency:
           type: string
-        image:
-          type: string
-          format: uri
         notes:
           type: string
     CheckoutItem:

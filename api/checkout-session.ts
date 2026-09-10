@@ -83,10 +83,6 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
       `line_items[${index}][price_data][product_data][description]`,
       product!.description,
     );
-    params.set(
-      `line_items[${index}][price_data][product_data][images][0]`,
-      product!.image,
-    );
   });
 
   try {

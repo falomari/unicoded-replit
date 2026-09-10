@@ -26,7 +26,6 @@ export const ListProductsResponseItem = zod.object({
   "description": zod.string(),
   "price": zod.number().int().describe('Price in the smallest currency unit'),
   "currency": zod.string(),
-  "image": zod.string().url(),
   "notes": zod.string()
 })
 export const ListProductsResponse = zod.array(ListProductsResponseItem)
